@@ -1,13 +1,17 @@
 package com.yunji.liveChat.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
+import lombok.*;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "user")
+@Getter
+@Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     private Integer id;
