@@ -28,17 +28,15 @@ class LiveChatApplicationTests {
 
     @Test
     public void testAddUser() {
-        int id = 1;
         String nickName = "bob";
 
         User user = User.builder()
-                .id(id)
                 .nickname(nickName)
                 .date(new Date())
                 .build();
 
         userService.addUser(user);
-        User findUser = userService.findById(id);
+        User findUser = userService.findById(user.getId());
 
         Assertions.assertEquals(user.getId(), findUser.getId());
         Assertions.assertEquals(user.getNickname(), findUser.getNickname());
@@ -46,35 +44,29 @@ class LiveChatApplicationTests {
 
     @Test
     public void testStartChat() {
-        int firstId = 1;
         String firstNickName = "bob";
         User firstUser = User.builder()
-                .id(firstId)
                 .nickname(firstNickName)
                 .build();
         userService.addUser(firstUser);
 
-        int secondId = 2;
         String secondNickName = "alice";
         User secondUser = User.builder()
-                .id(secondId)
                 .nickname(secondNickName)
                 .build();
         userService.addUser(secondUser);
 
-        int roomID = 1;
         String randomTitle = "ran" + Math.random();
         ChatRoom chatRoom = ChatRoom.builder()
-                .id(1)
                 .title(randomTitle)
                 .date(new Date())
                 .build();
         chatRoomService.addChatRoom(chatRoom);
 
-        chatMemberService.addChatMember(firstId, roomID);
-        chatMemberService.addChatMember(secondId, roomID);
+        chatMemberService.addChatMember(firstUser.getId(), chatRoom.getId());
+        chatMemberService.addChatMember(secondUser.getId(), chatRoom.getId());
 
-        ChatMember chatMember = chatMemberService.findChatMemberByUser(firstId);
-        Assertions.assertEquals(chatMember.getRoomId(), roomID);
+        ChatMember chatMember = chatMemberService.findChatMemberByUser(firstUser.getId());
+        Assertions.assertEquals(chatMember.getRoomId(), chatRoom.getId());
     }
 }
